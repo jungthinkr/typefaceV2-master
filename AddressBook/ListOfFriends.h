@@ -10,6 +10,8 @@
 - (IBAction)logout:(id)sender;
 
 
+- (IBAction)checkinternet:(id)sender;
+
 
 @property (nonatomic, strong) PFObject *friend;
 @end

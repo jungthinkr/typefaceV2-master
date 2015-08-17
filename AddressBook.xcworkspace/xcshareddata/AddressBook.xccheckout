@@ -10,6 +10,8 @@
 	<string>AddressBook</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>6927CF254B73463F4C6816A586E0EE46BFFFDFB5</key>
+		<string>https://github.com/jungthinkr/typefaceV2-master.git</string>
 		<key>F3743FED3D54194FF61E3194666D69158C1AF16A</key>
 		<string>https://github.com/jungthinkr/my-project.git</string>
 	</dict>
@@ -17,15 +19,17 @@
 	<string>AddressBook.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>F3743FED3D54194FF61E3194666D69158C1AF16A</key>
+		<key>6927CF254B73463F4C6816A586E0EE46BFFFDFB5</key>
 		<string>..</string>
+		<key>F3743FED3D54194FF61E3194666D69158C1AF16A</key>
+		<string>../../my-project</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/jungthinkr/my-project.git</string>
+	<string>https://github.com/jungthinkr/typefaceV2-master.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>F3743FED3D54194FF61E3194666D69158C1AF16A</string>
+	<string>6927CF254B73463F4C6816A586E0EE46BFFFDFB5</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>F3743FED3D54194FF61E3194666D69158C1AF16A</string>
 			<key>IDESourceControlWCCName</key>
 			<string>my-project</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6927CF254B73463F4C6816A586E0EE46BFFFDFB5</string>
+			<key>IDESourceControlWCCName</key>
+			<string>typefaceV2-master</string>
 		</dict>
 	</array>
 </dict>

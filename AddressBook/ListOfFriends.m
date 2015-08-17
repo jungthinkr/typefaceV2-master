@@ -15,9 +15,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *syncContactsbutton;
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchbar;
-- (IBAction)seguetobuttons:(id)sender;
 
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *buttons;
+
+
 @property (strong,nonatomic) NSMutableArray *filteredSearchArray;
 @property (nonatomic, strong) NSMutableArray *arrContactsData;
 @property (nonatomic, strong) NSMutableArray *arrNumbers;
@@ -50,7 +50,7 @@
     }
     _refresh.hidden = YES;
 
-
+  
  
     
 }
@@ -394,6 +394,7 @@ else{
                         CFRelease(currentPhoneValue);
                     }
                     CFRelease(phoneNumbers);
+                  
                     // Initialize the array if it's not yet initialized.
                     if (_arrContactsData == nil) {
                         _arrContactsData = [[NSMutableArray alloc] init];
@@ -401,26 +402,25 @@ else{
                     if(_arrNumbers == nil) {
                         _arrNumbers = [[NSMutableArray alloc] init];
                     }
-                    NSLog(@"hiiii");
                     if(_names == nil ) {
                         _names = [[NSMutableArray alloc] init];
                     }
-                    _names[i] = [NSString stringWithFormat:@"%@ %@", [contactInfoDict objectForKey:@"firstName"], [contactInfoDict objectForKey:@"lastName"]];
-                    [[PFUser currentUser] addUniqueObject:_names[i] forKey: @"names"];
-                    [[PFUser currentUser] saveInBackground];
-                         NSLog(@"%@", _names[i]);
-                    // Add the dictionary to the array.
-
-                    _arrNumbers[i]=contactInfoDict;
-
-                    
+                    if ([[contactInfoDict objectForKey:@"firstName"] isEqualToString:@""])
+                        {NSLog(@"empty");}
+                    else
+                    {[_names addObject:[NSString stringWithFormat:@"%@ %@", [contactInfoDict objectForKey:@"firstName"], [contactInfoDict objectForKey:@"lastName"]]];
+                        
+                        [[PFUser currentUser] addUniqueObject:[NSString stringWithFormat:@"%@ %@", [contactInfoDict objectForKey:@"firstName"], [contactInfoDict objectForKey:@"lastName"]] forKey: @"names"];
+                        [[PFUser currentUser] saveInBackground];
+                        // Add the dictionary to the array.
+                        
+                        [_arrNumbers addObject:contactInfoDict];
+                    }
                     NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"firstName"
                                                                                  ascending:YES];
                     NSMutableArray *sortDescriptors = [NSMutableArray arrayWithObject:sortByName];
                     _arrContactsData = [_arrNumbers sortedArrayUsingDescriptors:sortDescriptors];
-                    
-
-                    
+                 
                     
                     
                 }
@@ -491,19 +491,24 @@ else{
             if(_names == nil ) {
                 _names = [[NSMutableArray alloc] init];
             }
-            _names[i] = [NSString stringWithFormat:@"%@ %@", [contactInfoDict objectForKey:@"firstName"], [contactInfoDict objectForKey:@"lastName"]];
-            [[PFUser currentUser] addUniqueObject:_names[i] forKey: @"names"];
-            [[PFUser currentUser] saveInBackground];
-            // Add the dictionary to the array.
-            NSLog(@"%@", _names[i]);
-            _arrNumbers[i]=contactInfoDict;
-            
+            if ([[contactInfoDict objectForKey:@"firstName"] isEqualToString:@""])
+            {NSLog(@"empty");}
+            else
+            {[_names addObject:[NSString stringWithFormat:@"%@ %@", [contactInfoDict objectForKey:@"firstName"], [contactInfoDict objectForKey:@"lastName"]]];
+                
+                [[PFUser currentUser] addUniqueObject:[NSString stringWithFormat:@"%@ %@", [contactInfoDict objectForKey:@"firstName"], [contactInfoDict objectForKey:@"lastName"]] forKey: @"names"];
+                [[PFUser currentUser] saveInBackground];
+                // Add the dictionary to the array.
+                
+                [_arrNumbers addObject:contactInfoDict];
+            }
             NSSortDescriptor *sortByName = [NSSortDescriptor sortDescriptorWithKey:@"firstName"
                                                                          ascending:YES];
             NSMutableArray *sortDescriptors = [NSMutableArray arrayWithObject:sortByName];
             _arrContactsData = [_arrNumbers sortedArrayUsingDescriptors:sortDescriptors];
+      
             
-            
+     
             
         }
         [self updateNumbers];
@@ -513,7 +518,8 @@ else{
     }
     
     NSLog(@"%@",_arrContactsData[0]);
-    
+    NSLog(@"%@",_arrContactsData[1]);
+    NSLog(@"%@",_arrContactsData[3]);
     _syncContacts.hidden = YES;
     
     
@@ -574,35 +580,32 @@ else{
     }
     
 }
-- (IBAction)seguetobuttons:(id)sender {
-    [self performSegueWithIdentifier:@"buttons" sender:self];
+
+
+#pragma mark - test connection
+- (IBAction)checkinternet:(id)sender {
+    NSLog(@"hi");
+    // check if we've got network connectivity
+    Reachability *myNetwork = [Reachability reachabilityWithHostname:@"google.com"];
+    NetworkStatus myStatus = [myNetwork currentReachabilityStatus];
+    
+    switch (myStatus) {
+        case NotReachable:
+            NSLog(@"There's no internet connection at all. Display error message now.");
+            break;
+            
+        case ReachableViaWWAN:
+            NSLog(@"We have a 3G connection");
+            break;
+            
+        case ReachableViaWiFi:
+            NSLog(@"We have WiFi.");
+            break;
+            
+        default:
+            break;
+    }
 }
 
-#pragma mark - test connection 
-- (void)testInternetConnection
-{
-    internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
-    
-    // Internet is reachable
-    internetReachableFoo.reachableBlock = ^(Reachability*reach)
-    {
-        // Update the UI on the main thread
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.navigationItem.rightBarButtonItem setEnabled: YES];
-            NSLog(@"Yayyy, we have the interwebs!");
-        });
-    };
-    
-    // Internet is not reachable
-    internetReachableFoo.unreachableBlock = ^(Reachability*reach)
-    {
-        // Update the UI on the main thread
-        dispatch_async(dispatch_get_main_queue(), ^{
-        [self.navigationItem.rightBarButtonItem setEnabled: NO];
-            NSLog(@"Someone broke the internet :(");
-        });
-    };
-    
-    [internetReachableFoo startNotifier];
-}
+
 @end
